@@ -1,10 +1,15 @@
 #Andres Ramos Rodriguez
 
 import sys
-# import sage.all
-#Es lento cc pq tiene que llamar a sage completo
 from sage.all import *
 from collections import deque
+
+#Class for working with Costas Sequences. 
+
+#Todo:
+#	1) Document better and clean up code
+#	2) Implement Shears for dimensiones > 3
+#	3) Write Tests
 
 #Helper function del helper function de shear
 #Creates vector to be added to original entry
@@ -12,6 +17,7 @@ def helper_helper(value, index, dimension):
 	v = [0]*dimension
 	v[index] = value
 	return vector(v)
+
 
 
 class CostasSequence:
@@ -31,7 +37,8 @@ class CostasSequence:
 				self.length = len(seq)
 				self.n = n
 				self.sequence = [0]*self.length
-				self.dimension = len(seq[0]) + 1
+				#Fails if sequence is 1 dimensional
+				self.dimension = len(seq[0]) + 1	
 				for i in range(self.length):
 					self.sequence[i] = vector(seq[i])
 
@@ -192,57 +199,3 @@ class CostasSequence:
 
 
 
-# c3d = CostasSequence([(0, 1), (1, 0), (1, 3), (4, 3), (2, 2), (4, 1), (0, 2), (2, 0), (2, 1), (3, 1), (4, 4), (3, 2), (0, 4), (4, 0), (4, 2), (1, 2), (3, 3), (1, 4), (0, 3), (3, 0), (3, 4), (2, 4), (1, 1), (2, 3)],5)
-# c2d = CostasSequence([1,2,4,3],5)
-c1 = CostasSequence([(0, 1), (4, 0), (1, 3), (1, 2), (2, 2), (1, 4), (0, 2), (3, 0), (2, 1), (2, 4), (4, 4), (2, 3), (0, 4), (1, 0), (4, 2), (4, 3), (3, 3), (4, 1), (0, 3), (2, 0), (3, 4), (3, 1), (1, 1), (3, 2)], 5)
-c1.show()
-print("\n")
-c1.shear([2,2]).show()
-
-# print("costas")
-# print(c3d.dimension)
-# c3d.show()
-# print("\n")
-
-# # c2d.show()
-
-# # print("\n")
-# # print("mult by 23")4
-# # c3d.multiplication(23).show()
-# for i in c3d.decompose(6):
-# 	print(i)
-# print("\n")
-
-
-# # s = c3d.shear_permutation([4,2])
-# # print(s.sequence)
-# # s.show()
-# # print("\n")
-
-# # # print("cyclic shift by 4")
-# # c3d.cyclic_shift(4).show()
-# # print("\n")
-# print("row column mult")
-# s = (c3d.multiplication(17))
-# s.show()
-# for i in s.decompose(6):
-# 	print(i)
-# print("\n")
-# c3d.shear_permutation([1,0]).show()
-
-# print(M[0], "\n")
-# print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in M]))
-# # product(c, [1,1], 5)
-# print(c)
-# print(c.shear_permutation([1,2]))
-
-# print(c.row_column_mult([2,4]))
-# print(c.dimension)
-# print(c.length)
-# print(c.diff_triangle())
-# print(c.cyclic_shift(-1))
-# print(c.row_column_mult(vector([1,2])))
-# print(c.array)
-# print(c.difference_triangle)
-# print(c.dimension)
-# print(c.is_costas())
