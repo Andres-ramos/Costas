@@ -2,11 +2,17 @@ import sys
 import os
 
 sys.path.append(".")
-from costas_lib import CostasSequence
+from CostasSequences import *
+from CostasSequence2D import *
 from sage.all import *
 
-
+#############################################################################
 #Costas Construct uses Welch Construction to construct Costas Sequences of #length p^m - 1 for some prime p and any dimension m
+
+
+#Todo:
+#   1) Implement Lempel-Golomb Construction for 2 dimensions
+##############################################################################
 
 
 #Converts polynomial list into vectors into corresponding vectors
@@ -60,10 +66,12 @@ def CostasConstructor(prime, dimension):
 
     if dimension > 1 :
         CostasSeq = CreateWelchMD(a, prime, dimension)
-        return CostasSequence(CostasSeq, prime)
+        return CostasSequence(CostasSeq, prime, dimension)
+
+    #dimension 2
     else :
         a = F.multiplicative_generator()
         CostasSeq = CreateWelch2D(a, prime)
-        return CostasSequence(CostasSeq, prime)
+        return CostasSequence2d(CostasSeq, prime - 1)
 
 

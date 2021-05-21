@@ -30,10 +30,23 @@ class CostasSequence:
 	#Instanciates sequence
 	#Checks if its costas
 	#Otherwise prints error
-	def __init__(self, seq, n):
+	def __init__(self, seq, n, dimension):
 
+		#Initialize list
+		#Initialize list length
+		self.sequence = seq
+		self.length = len(seq)
+
+		#check costas condition
 		if self.is_costas():
-			try : 
+
+			if dimension == 2:
+				self.dimension = dimension
+				self.length = len(seq)
+				self.n = n
+
+
+			else :
 				self.length = len(seq)
 				self.n = n
 				self.sequence = [0]*self.length
@@ -44,13 +57,11 @@ class CostasSequence:
 
 				
 
-			except:
-				self.dimension = 2
-				self.sequence = seq
-				self.length = len(seq)
-				self.n = n
+				
 			
 		else :
+			self.sequence = []
+			self.length = 0
 			print("Error: Sequence is not Costas")
 
 
@@ -61,9 +72,12 @@ class CostasSequence:
 	        v = []
 	        for i in range(self.length - h):
 	            if self.sequence[i + h] - self.sequence[i] in v:
-	                return False 
+	            	# print("en false")
+	            	return False 
 	            else :
 	                v.append(self.sequence[i + h] - self.sequence[i])
+	                # print("en true")
+	        # print(v)
 	        
 	    return True
 
@@ -85,13 +99,16 @@ class CostasSequence:
 
 		for i in range(self.length):
 			d[(i + index)%self.length] = self.sequence[i]
-		return CostasSequence(d, self.n)
+		return CostasSequence(d, self.n, self.dimension)
 
 	#Input: vector dimension m if self is m+1 dimensional costas
 	#Output: row-column mult of the costas sequence by the input
 	def RC_multiplication(self, vector):
 
-		print(sorted(vector))
+
+	
+
+		# print(sorted(vector))
 		#Input validation. Checks if entries in vector bigger than 0
 		if sorted(vector)[0] > 0:
 
@@ -104,11 +121,11 @@ class CostasSequence:
 				# print(row)
 				nseq[i] = row
 
-			return CostasSequence(nseq, self.n)
+			return CostasSequence(nseq, self.n, self.dimension)
 
 		else :
 			print("Error: RC multiplication defined for non-zero entries\n")
-			
+		
 
 	#Returns costas sequence of self multiplied by m
 	#Needs input validation for m (has to be relatively prime to self.length)
@@ -164,6 +181,7 @@ class CostasSequence:
 	#Prints costas sequence in 2 and 3 dimensions
 	def show(self):
 		if self.dimension == 2:
+			#Aqui se puede hacer algo pa que se vea lindo
 			print(self.sequence)
 		elif self.dimension == 3:
 			M = self.make_matrix()
@@ -198,4 +216,18 @@ class CostasSequence:
 		return nseq
 
 
+# C1 = CostasSequence([1,2,4,3], 4, 2)
+# C2 = CostasSequence([1,2,3,4], 4, 2)
+# print("Sequence ", C1.sequence)
+# print("Difference triangle ", C1.diff_triangle())
+
+# #Cyclic shift test
+# print("Cyclic shifts")
+# for i in range(4):
+# 	print(C1.cyclic_shift(i).sequence)
+
+
+# #2d RC-mult
+# print("RC-mult in 2d")
+# print(C1.RC_multiplication([1]))
 
