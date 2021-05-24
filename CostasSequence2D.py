@@ -1,18 +1,27 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+
+#Todo:
+#	1) Think about a way to make the class work with Costas Sequences
+#	   that aren't one based. Maybe scale them?
+#	2) Extend the methods to account for Sonar Sequences and Costas sequences
+#	   whose image is not [n], for example (1,2,4). The show fails for these
+#	   cases. Test which other functions dont work in these cases.
+
 class CostasSequence2d:
 
 	sequence = []	#Sequence
 	length = 0		#Length of sequence
-	n = 0			#Biggest entry in the sequence
+	order = 0		#Biggest entry in the sequence
 
-	########################################################################
+############################################################################
 
 	#Constructors
 
-	#########################################################################
-	#Input: sequence of elements, largest entry in the sequence
+#############################################################################
+	#Input: sequence of elements. 
+	#Sequence has to be 1 based
 	def __init__(self, seq):
 
 		#Initializes sequence and sequence length
@@ -22,8 +31,15 @@ class CostasSequence2d:
 		#Verifies if sequence is Costas
 		#This uses the sequence and its length
 		if self.is_costas():
-			#Sets largest entry
-			self.n = max(sorted(seq))
+			#Checks if sequence is 1-based
+			if min(seq) < 1:
+				print("Error: Sequence must start at 1")
+				self.sequence = []
+				self.length = 0
+
+			else :
+				#Set the order of the Costas Sequence
+				self.order = max(seq)
 
 		#If sequence isnt costas, display error and reset values of seq and length
 		else :
@@ -31,11 +47,11 @@ class CostasSequence2d:
 			self.length = 0
 			print("Error: Sequence is not Costas")
 
-	##########################################################################
+##############################################################################
 
 	#Costas Condition Verifiers
 
-	#########################################################################
+#############################################################################
 
 	#Checks if the given sequence is Costas
 	#Uses difference triangle method
@@ -64,12 +80,12 @@ class CostasSequence2d:
 
 		return T
 
-	##########################################################################
+##############################################################################
 
 
 	#Costas Transformations
 
-	##########################################################################
+##############################################################################
 
 	#Inputs index by which we want to shift
 	#Outputs sequence shifted to the right by index
@@ -89,7 +105,7 @@ class CostasSequence2d:
 			va = ((i +1)*X)%(self.length + 1) - 1 
 			seq[i] = self.sequence[va]
 		# print(seq)
-		return CostasSequence2d(seq, self.n)
+		return CostasSequence2d(seq)
 
 	#Rotates Costas Array to the right	
 	def rotate(self):
@@ -103,17 +119,17 @@ class CostasSequence2d:
 			v[i] = self.sequence[self.length - i - 1]
 		return CostasSequence2d(v)
 
-	##########################################################################
+##############################################################################
 
 	#Costas Display
 
-	##########################################################################
+##############################################################################
 
 	#Grid plot for 2d costas arrays
 	def show(self):
 
 		#Sets x values
-		x = np.array([i for i in range(1, self.n + 1)])
+		x = np.array([i for i in range(1, self.order + 1)])
 		y = np.array(self.sequence)
 
 		plt.xlim([0, len(x)])
@@ -136,13 +152,16 @@ class CostasSequence2d:
 
 
 
+##########################################################################
+
 
 #Miscellaneous functions
-
+#Used in the show function
 def rescale(v):
 	v = v - .5
 	return v
 
+#Used in rotate function
 def inverse(list):
 	inv = [0]*len(list)
 	for i in range(len(list)):
@@ -156,30 +175,68 @@ def inverse(list):
 #Tests
 
 
-# C = CostasSequence2d([1,2,4,3])
-# C.show()
-# l = [1,5,3,2,4]
-# # print([0,1,2,3,4])
-# # print(l)
-# C.rotate().show()
-# C1 = CostasSequence2d([1,3,2])
-# C2 = CostasSequence2d([1])
-# print(C.sequence)
-# C.show()
-# print(C.reflect().sequence)
-# C.reflect().show()
-# print(C1.n)
-# print(C.sequence)
-# print("Cyclic shifts")
-# for i in range(6):
-	# print(C.cyclic_shift(i).sequence)
-	# C.cyclic_shift(i).show()
+# C = CostasSequence2d([4,3,6,1,5,2])
+# print('sequence', C.sequence)
+# print('length', C.length)
+# print('order', C.order)
+# # C.show()
+# print('difference triangle', C.diff_triangle(), "\n")
 
-# print(C1.cyclic_shift(1).sequence)
+# print('cyclic_shifts')
+# for i in range(C.length):
+# 	print(C.cyclic_shift(i).sequence)
 
-# print("I_multiplication")
-# for i in range(1, 5):
-
+# print('\nIndex multiplication')
+# for i in range(1, C.length + 1):
 # 	print(C.I_multiplication(i).sequence)
+# 	# C.I_multiplication(i).show()
 
-# C.show()
+# print("\nrotations and reflections")
+# c= C
+# for i in range(4):
+# 	c = c.rotate()
+# 	print("\t",c.sequence)
+# 	print("\t",c.reflect().sequence)
+# 	# c.show()
+
+# print('\nreflections')
+# print(C.reflect().sequence)
+# # C.reflect().show()
+
+# print(C.reflect().reflect().sequence)
+# # C.show()
+
+
+# print("------------------------------")
+# C = CostasSequence2d([6,4,1,3,2,5])
+# print('sequence', C.sequence)
+# print('length', C.length)
+# print('order', C.order)
+# # C.show()
+# print('difference triangle', C.diff_triangle(), "\n")
+
+# print('cyclic_shifts')
+# for i in range(C.length):
+# 	print(C.cyclic_shift(i).sequence)
+
+# print('\nIndex multiplication')
+# for i in range(1, C.length + 1):
+# 	print(C.I_multiplication(i).sequence)
+# 	# C.I_multiplication(i).show()
+
+# print("\nrotations and reflections")
+# c= C
+# for i in range(4):
+# 	c = c.rotate()
+# 	print("\t",c.sequence)
+# 	print("\t",c.reflect().sequence)
+# 	# c.show()
+
+# print('\nreflections')
+# print(C.reflect().sequence)
+# # C.reflect().show()
+
+# print(C.reflect().reflect().sequence)
+# # C.show()
+
+
